@@ -1,0 +1,25 @@
+{
+  "name": "picciotto-server",
+  "version": "1.0.0",
+  "description": "server personelle",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xavierpicciotto/picciotto-server.git"
+  },
+  "author": "picciotto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xavierpicciotto/picciotto-server/issues"
+  },
+  "homepage": "https://github.com/xavierpicciotto/picciotto-server#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1"
+  }
+}
