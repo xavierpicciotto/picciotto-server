@@ -1,7 +1,8 @@
 const express = require('express')
-const path = require('path')
-
 const app = express()
+
+app.use(express.urlencoded({extended:true}))
+app.use(express.json())
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin','*'/*https://xavier-picciotto.com/*/)
@@ -10,5 +11,15 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use(bodyParser.urlencoded({extended:true}))
-app.use(bodyParser.json())
+const db = require('./models/index')
+
+db.sequelize.sync()
+
+app.get('/',(req,res)=> {
+  res.status(200).send({message:'server piccciotto-xm en service'})
+})
+
+//CRUD USER
+require('./routes/user.routes')(app)
+
+module.exports = app
