@@ -11,7 +11,7 @@ module.exports = {
       host: '151.106.109.41',
       ref: 'origin/start-server',
       repo: 'git@github.com:xavierpicciotto/picciotto-server.git',
-      path: '/home/supervisor/',
+      path: '/var/www/picciotto-xm.tech/',
       'pre-deploy-local':'',
       'post-deploy':'npm install && pm2 reload ecosystem.config.js --env production',
       'pre-setup':''
