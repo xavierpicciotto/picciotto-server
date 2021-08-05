@@ -9,7 +9,7 @@ module.exports = {
     production: {
       user: 'supervisor',
       host: '151.106.109.41',
-      ref: 'origin/start-server',
+      ref: 'start-server',
       repo: 'git@github.com:xavierpicciotto/picciotto-server.git',
       path: '/home/supervisor/test',
       'pre-deploy-local':'',
