@@ -100,7 +100,6 @@ exports.deleteUser = (req, res) => {
             id: req.params.id
         }
     }).then(deleted => {
-        console.log(deleted)
         if (deleted === 1) {
             return res.status(200).send({
                 message: 'supresion succes'
