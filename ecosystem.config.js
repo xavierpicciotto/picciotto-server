@@ -6,7 +6,7 @@ module.exports = {
 
   deploy : {
     production: {
-      key: "Users/xav/.ssh/",
+      key: "xav/.ssh/",
       user: "supervisor",
       host: ["151.106.109.41"],
       //ssh_options: "StrictHostKeyChecking=no",
