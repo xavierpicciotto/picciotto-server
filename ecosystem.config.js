@@ -10,7 +10,7 @@ module.exports = {
       user: "supervisor",
       host: ["151.106.109.41"],
       //ssh_options: "StrictHostKeyChecking=no",
-      ref: "origin/start-server",
+      ref: "start-server",
       repo: "git@github.com:xavierpicciotto/picciotto-server.git",
       path: "/home/supervisor",
       'pre-setup': "apt-get install git; ls -la",
