@@ -6,10 +6,10 @@ module.exports = {
 
   deploy : {
     production: {
-      key: "C:/Users/xav/.ssh/",
+      //key: "C:/Users/xav/.ssh/",
       user: "supervisor",
       host: ["151.106.109.41"],
-      ssh_options: "StrictHostKeyChecking=no",
+      //ssh_options: "StrictHostKeyChecking=no",
       ref: "origin/start-server",
       repo: "git@github.com:xavierpicciotto/picciotto-server.git",
       path: "/home/supervisor",
