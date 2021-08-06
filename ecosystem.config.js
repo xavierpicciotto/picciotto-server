@@ -9,7 +9,6 @@ module.exports = {
       key: "../../.ssh/id_rsa",
       user: "supervisor",
       host: ["151.106.109.41"],
-      //ssh_options: "StrictHostKeyChecking=no",
       ref: "start-server",
       repo: "https://github.com/xavierpicciotto/picciotto-server.git",
       path: "/home/supervisor",
