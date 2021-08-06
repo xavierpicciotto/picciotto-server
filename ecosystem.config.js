@@ -2,7 +2,6 @@ module.exports = {
   apps : [{
     name   : "picciotto-xm",
     script : "./server.js",
-    ignore_watch: ['./node_modules']
   }],
 
   deploy : {
