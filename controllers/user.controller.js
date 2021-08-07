@@ -9,13 +9,12 @@ const User = db.user
 
 //INSCRIPTION
 exports.signup = (req, res) => {
-    console.log(req.body)
     User.create({
         user_name: `${req.body.user_name}`,
         password: bcrypt.hashSync(`${req.body.password}`, 5)
     }).then(user => {
         console.log(user)
-        return res.status(200).send({
+        return res.status(201).send({
             message: `Utilisateur correctement enregistré !`
         })
     }).catch(err => {
@@ -70,19 +69,20 @@ exports.modify = (req, res) => {
             id: req.params.id
         }
     }).then(user => {
-        let update = {
-            user_name: `${req.body.user_name}`,
-            password: `${req.body.password}`,
+        const newName = typeof (req.body.user_name) == "string" ? req.body.user_name : user.user_name
+        const newPasssword = typeof (req.body.password) == "string" ? bcrypt.hashSync(req.body.password, 5) : user.password
+        const userUpdate = {
+            user_name: newName,
+            password: newPasssword
         }
-        update.password ? update.password = bcrypt.hashSync(update.password, 5) : ''
-        const userUpdate = Object.assign(user, update)
+        console.log(userUpdate)
         User.update(
-            userUpdate.dataValues, {
+            userUpdate, {
                 where: {
                     id: req.params.id
                 }
             }).then(() => {
-            return res.status(200).send({
+            return res.status(201).send({
                 message: 'modification succes'
             })
         })
@@ -105,7 +105,7 @@ exports.deleteUser = (req, res) => {
                 message: 'supresion succes'
             })
         }
-        if (deleted !== 1){
+        if (deleted !== 1) {
             return res.status(404).send({
                 message: "Utilisateur inexistant"
             })
