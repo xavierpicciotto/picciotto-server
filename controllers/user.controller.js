@@ -9,11 +9,15 @@ const User = db.user
 
 //INSCRIPTION
 exports.signup = (req, res) => {
+    if(req.body.user_name == undefined || req.body.password == undefined){
+        return res.status(400).send({
+            message: `Indentifiant incomplet, user_name et password reqsuis`
+        })
+    }
     User.create({
-        user_name: `${req.body.user_name}`,
-        password: bcrypt.hashSync(`${req.body.password}`, 5)
-    }).then(user => {
-        console.log(user)
+        user_name: req.body.user_name,
+        password: bcrypt.hashSync(req.body.password, 5)
+    }).then(() => {
         return res.status(201).send({
             message: `Utilisateur correctement enregistré !`
         })
@@ -28,7 +32,7 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
     User.findOne({
         where: {
-            user_name: `${req.body.user_name}`
+            user_name: req.body.user_name
         }
     }).then(user => {
         if (!user) {
@@ -69,13 +73,12 @@ exports.modify = (req, res) => {
             id: req.params.id
         }
     }).then(user => {
-        const newName = typeof (req.body.user_name) == "string" ? req.body.user_name : user.user_name
-        const newPasssword = typeof (req.body.password) == "string" ? bcrypt.hashSync(req.body.password, 5) : user.password
+        const newName = req.body.user_name !== undefined ? req.body.user_name : user.user_name
+        const newPasssword = req.body.password !== undefined ? bcrypt.hashSync(req.body.password, 5) : user.password
         const userUpdate = {
             user_name: newName,
             password: newPasssword
         }
-        console.log(userUpdate)
         User.update(
             userUpdate, {
                 where: {

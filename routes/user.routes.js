@@ -12,6 +12,6 @@ module.exports = function(app) {
     
     app.post('/api/user/signup',authPrerequisite,controller.signup)
     app.post('/api/user/signin',authPrerequisite,controller.signin)
-    app.put('/api/user/modify/:id',authPrerequisite,verifyToken,controller.modify)
+    app.put('/api/user/modify/:id',verifyToken,authPrerequisite,controller.modify)
     app.delete('/api/user/delete/:id',verifyToken,controller.deleteUser)
 }
