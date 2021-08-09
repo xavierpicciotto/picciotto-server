@@ -64,14 +64,12 @@ a:hover {
 
 .github {
     color: rgba(29, 29, 29, 0.767);
-    padding: 2%;
-    margin: 5%;
+    margin: 1%;
 }
 
 .linkedin {
     color: blue;
-    padding: 2%;
-    margin: 5%;
+    margin: 1%;
 }
 
 @keyframes rotate {
