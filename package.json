@@ -1,6 +1,6 @@
 {
   "name": "picciotto-server",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "server personelle",
   "main": "server.js",
   "scripts": {
@@ -19,8 +19,10 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
+    "express-handlebars": "^5.3.3",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
+    "nodemailer": "^6.6.3",
     "nodemon": "^2.0.12",
     "sequelize": "^6.6.5"
   }
