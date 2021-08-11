@@ -3,13 +3,11 @@ const config = require('../config/jwt.config')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
-const Op = db.Sequelize.Op
-
 const User = db.user
 
 //INSCRIPTION
 exports.signup = (req, res) => {
-    if(req.body.user_name == undefined || req.body.password == undefined){
+    if (req.body.user_name == undefined || req.body.password == undefined) {
         return res.status(400).send({
             message: `Indentifiant incomplet, user_name et password reqsuis`
         })
@@ -68,6 +66,7 @@ exports.signin = (req, res) => {
 
 //MISE A JOUR
 exports.modify = (req, res) => {
+
     User.findOne({
         where: {
             id: req.params.id
@@ -87,6 +86,10 @@ exports.modify = (req, res) => {
             }).then(() => {
             return res.status(201).send({
                 message: 'modification succes'
+            })
+        }).catch(err => {
+            return res.status(500).send({
+                message: `Error: ${err}`
             })
         })
     }).catch(err => {
