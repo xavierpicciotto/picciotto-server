@@ -2,6 +2,22 @@ const db = require('../models/')
 const Email = db.email
 const nodeMailer = require('../config/email.config')
 
+//fonction utilisé pour l'expiration du code de confirmation
+async function codeExpiration(id) {
+    Email.destroy({
+        where: {
+            id: id
+        }
+    }).then(deleted => {
+        if (deleted === 1) {
+            return console.log(`Code expiré id ${id}`)
+        }
+        if (deleted !== 1) {
+            return console.log('error expiration du code de verification')
+        }
+    }).catch(err => console.log(err))
+}
+
 exports.register = (req, res) => {
     const isEmailFormat = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     if (!isEmailFormat.test(req.body.email)) {
@@ -19,7 +35,11 @@ exports.register = (req, res) => {
     Email.create({
         email: req.body.email,
         verifyCode: verifyCode
-    }).then(() => {
+    }).then((email) => {
+        //Délai d'expiration du Code de verif
+        setTimeout(() => {
+            codeExpiration(email.id)
+        }, 600000/*1min*/)
         //appel la fonction de nodeMailer
         nodeMailer.main(req.body.email, `<html>
         <body>

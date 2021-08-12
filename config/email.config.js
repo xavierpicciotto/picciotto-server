@@ -2,14 +2,13 @@ const nodemailer = require('nodemailer')
 
 //NODEMAILER config
  async function main(emailTarget,emailContent) {
-    console.log(emailTarget,'&&&&',emailContent)
     let transporter = nodemailer.createTransport({
       host: "ssl0.ovh.net",
       port: 587,
       secure: false, // upgrade later with STARTTLS
       auth: {
-        user: 'picciotto-xm@xavier-picciotto.com',
-        pass: '',
+        user: '',//SMTP user
+        pass: '',//SMTP password
       },
       tls: {
         rejectUnauthorized: false
