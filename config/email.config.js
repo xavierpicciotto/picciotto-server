@@ -9,7 +9,7 @@ const nodemailer = require('nodemailer')
       secure: false, // upgrade later with STARTTLS
       auth: {
         user: 'picciotto-xm@xavier-picciotto.com',
-        pass: 'RUTTEUCJO',
+        pass: '',
       },
       tls: {
         rejectUnauthorized: false
@@ -19,7 +19,7 @@ const nodemailer = require('nodemailer')
       from: '"PICCIOTTO-XM" <picciotto-xm@xavier-picciotto.com>', // sender address
       to: emailTarget, // list of receivers
       subject: "Confirmation Email", // Subject line
-      text: "Hello world?", // plain text body
+      text: "", // plain text body
       html: emailContent, // html body
     });
     console.log("Message sent: %s", info.messageId);
