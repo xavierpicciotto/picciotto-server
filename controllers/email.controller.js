@@ -52,7 +52,7 @@ exports.register = (req, res) => {
         </body>
         </html>`).then(() => {
             return res.status(200).send({
-                message: `Email sauvegardé, un code de verification va vous êtres envoyé. Penser a regarder dans les spams si vous n'avez pas reçu l'email de confirmation`
+                message: `Email sauvegardé, un code de verification va vous êtres envoyé (valide 10min). Penser a regarder dans les spams si vous n'avez pas reçu l'email de confirmation`
             })
         }).catch(() => {
             res.status(400).send({
