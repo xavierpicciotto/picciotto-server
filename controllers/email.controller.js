@@ -12,26 +12,25 @@ async function codeExpiration(id) {
         if (deleted === 1) {
             return console.log(`Code expiré id ${id}`)
         }
+        if(deleted === 0){
+            return
+        }
         if (deleted !== 1) {
             return console.log('error expiration du code de verification')
         }
     }).catch(err => console.log(err))
 }
 
+//Creer un demande de verification pour l'email renseigné
 exports.register = (req, res) => {
-    const isEmailFormat = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    if (!isEmailFormat.test(req.body.email)) {
-        return res.status(400).send({
-            message: 'Format email non valide'
-        })
-    }
+
     const code = () => {
         //creer un code pin pour la verification d'email
         let code = Math.floor(Math.random() * 1001) + ''
         code = code.padStart('4', '0')
         return code
     }
-    const verifyCode = code() //fixe le code
+    const verifyCode = code() //fixe la valeur le code
     Email.create({
         email: req.body.email,
         verifyCode: verifyCode
@@ -39,7 +38,7 @@ exports.register = (req, res) => {
         //Délai d'expiration du Code de verif
         setTimeout(() => {
             codeExpiration(email.id)
-        }, 600000/*1min*/)
+        }, 600000/*10min*/)
         //appel la fonction de nodeMailer
         nodeMailer.main(req.body.email, `<html>
         <body>
@@ -62,4 +61,30 @@ exports.register = (req, res) => {
     }).catch(err => res.status(500).send({
         message: `Error : ${err}`
     }))
+}
+
+exports.emailVerifcation =(req,res)=>{
+    const Codeformat = /^[\d]{4}$/g
+    if(!Codeformat.test(req.body.code)){
+        return res.status(400).send({message: "Le format du code de vérification est éronné"})
+    }
+    Email.findOne({
+        where: {
+            email: req.body.email
+        }
+    }).then(email => {
+        if(email === null){
+            return res.status(404).send({message: `l'email: ${req.body.email} n'existe pas dans la database.`})
+        }
+        const verifyCode = email.verifyCode === req.body.code
+        if(verifyCode){
+            codeExpiration(email.id)
+            return res.status(200).send({message: `L'adresse mail: ${email.email} est bien Validée, Le serveur est à titre démonstratif les données vont y être supprimées`})
+        }
+        if(verifyCode !== true){
+            return res.status(400).send({message: `Le code est incorrect`})
+        }
+    }).catch(err => {
+        return res.status(500).send({message: err})
+    })
 }

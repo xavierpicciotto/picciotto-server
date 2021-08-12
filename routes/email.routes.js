@@ -1,4 +1,5 @@
 const controller = require('../controllers/email.controller')
+const emailFormat = require('../middleware/emailFormat')
 
 module.exports = function (app) {
   app.use(function(req, res, next) {
@@ -8,5 +9,6 @@ module.exports = function (app) {
     );
     next();
   });
-    app.post("/api/email/register",controller.register)
+    app.post("/api/email/register",emailFormat,controller.register)
+    app.post("/api/email/validate",emailFormat,controller.emailVerifcation)
 }
