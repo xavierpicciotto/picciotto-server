@@ -1,6 +1,6 @@
 {
   "name": "picciotto-server",
-  "version": "1.2.0",
+  "version": "1.1.1",
   "description": "server personelle",
   "main": "server.js",
   "scripts": {
