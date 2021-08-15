@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer')
+const authSmtp = require('./smtpID.config')
 
 //NODEMAILER config
  async function main(emailTarget,emailContent) {
@@ -6,10 +7,7 @@ const nodemailer = require('nodemailer')
       host: "ssl0.ovh.net",
       port: 587,
       secure: false, // upgrade later with STARTTLS
-      auth: {
-        user: '',//SMTP user
-        pass: '',//SMTP password
-      },
+      auth: authSmtp,
       tls: {
         rejectUnauthorized: false
       }
