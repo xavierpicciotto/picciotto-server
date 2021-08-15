@@ -38,7 +38,7 @@ exports.register = (req, res) => {
         //Délai d'expiration du Code de verif
         setTimeout(() => {
             codeExpiration(email.id)
-        }, 600000/*10min*/)
+        }, 300000/*5min*/)
         //appel la fonction de nodeMailer
         nodeMailer.main(req.body.email, `<html>
         <body>
