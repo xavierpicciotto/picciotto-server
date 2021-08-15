@@ -12,10 +12,17 @@ module.exports = (sequelise, Sequelize) => {
         },
         verifyCode: {
             type: Sequelize.DataTypes.STRING,
-            unique: true,
             validate: {
                 is: /^[\d]+$/g,
                 len: [4,4]
+            }
+        },
+        linkCode: {
+            type: Sequelize.DataTypes.STRING,
+            unique: true,
+            validate: {
+                is: /^\$2[ayb]\$.{56}$/g,
+                len: [1,60]
             }
         }
     })

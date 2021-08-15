@@ -1,6 +1,7 @@
 const db = require('../models/')
 const Email = db.email
 const nodeMailer = require('../config/email.config')
+const bcrypt = require('bcrypt')
 
 //fonction utilisé pour l'expiration du code de confirmation
 async function codeExpiration(id) {
@@ -30,6 +31,7 @@ exports.register = (req, res) => {
         return code
     }
     const verifyCode = code() //fixe la valeur le code
+    const linkCode = bcrypt.hashSync(req.body.email,2)
     //appel la fonction de nodeMailer
     nodeMailer.main(req.body.email, `<html>
     <body>
@@ -39,11 +41,15 @@ exports.register = (req, res) => {
         <div class="code">
             <h1>CODE : ${verifyCode} </h1>
         </div>
+        <h2>Methode n°2</h2>
+        <h3>Cliquer sur le lien ci-dessous 🙂</h3>
+        <p>https://picciotto-xm.tech/api/email/validate/${linkCode}</p>
     </body>
     </html>`).then(() => {
         Email.create({
             email: req.body.email,
-            verifyCode: verifyCode
+            verifyCode: verifyCode,
+            linkCode: linkCode
         }).then((email) => {
             //Délai d'expiration du Code de verif
             setTimeout(() => {
@@ -83,6 +89,28 @@ exports.emailVerifcation =(req,res)=>{
         if(verifyCode !== true){
             return res.status(400).send({message: `Le code est incorrect`})
         }
+    }).catch(err => {
+        return res.status(500).send({message: err})
+    })
+}
+
+exports.linkVerification = (req, res) => {
+    const linkCodeFormat = /^\$2[ayb]\$.{56}$/g
+    const testFormat = linkCodeFormat.test(req.params.linkCode)
+    if(!testFormat){
+        return res.status(400).send({message: `Le lien est incorrect`})  
+    }
+    Email.findOne({
+        where:{
+            linkCode: req.params.linkCode
+        }
+    }).then(email => {
+        const compareHash = bcrypt.compareSync(email.email,req.params.linkCode)
+        if(!compareHash){
+            return res.status(400).send({message: `La verification du lien a echouer`})
+        }
+        codeExpiration(email.id)
+        return res.status(200).send({message: `L'adresse mail: ${email.email} est bien Validée, Le serveur est à titre démonstratif les données vont y être supprimées`})
     }).catch(err => {
         return res.status(500).send({message: err})
     })
