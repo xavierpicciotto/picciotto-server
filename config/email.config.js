@@ -5,13 +5,20 @@ const authSmtp = require('./smtpID.config')
  async function main(emailTarget,emailContent) {
     let transporter = nodemailer.createTransport({
       host: "ssl0.ovh.net",
-      port: 587,
-      secure: false, // upgrade later with STARTTLS
+      port: 465,
+      secure: true, // upgrade later with STARTTLS
       auth: authSmtp,
-      tls: {
+      /*tls: {
         rejectUnauthorized: false
-      }
+      }*/
     });
+    transporter.verify((err,succes)=>{
+      if(err){
+        res.status(500).send({message: `verification comfiguration error: ${err}`})
+      }else {
+        console.log("server pret pour l'envois d'emails")
+      }
+    })
     let info = await transporter.sendMail({
       from: '"PICCIOTTO-XM" <picciotto-xm@xavier-picciotto.com>', // sender address
       to: emailTarget, // list of receivers
