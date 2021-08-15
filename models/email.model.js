@@ -21,7 +21,7 @@ module.exports = (sequelise, Sequelize) => {
             type: Sequelize.DataTypes.STRING,
             unique: true,
             validate: {
-                is: /^\$2[ayb]\$.{56}$/g,
+                is: /^[\d]{40}$/g,
                 len: [1,60]
             }
         }

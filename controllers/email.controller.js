@@ -1,7 +1,6 @@
 const db = require('../models/')
 const Email = db.email
 const nodeMailer = require('../config/email.config')
-const bcrypt = require('bcrypt')
 
 //fonction utilisé pour l'expiration du code de confirmation
 async function codeExpiration(id) {
@@ -24,14 +23,14 @@ async function codeExpiration(id) {
 
 //Creer un demande de verification pour l'email renseigné
 exports.register = (req, res) => {
-    const code = () => {
-        //creer un code pin pour la verification d'email
-        let code = Math.floor(Math.random() * 1001) + ''
-        code = code.padStart('4', '0')
+    function code (num,length) {
+        //Génére des codes pour la verification d'email
+        let code = Math.floor(Math.random() * num) + ''
+        code = code.padStart(length, '0')
         return code
     }
-    const verifyCode = code() //fixe la valeur le code
-    const linkCode = bcrypt.hashSync(req.body.email,2)
+    const verifyCode = code(1001,"4") //fixe la valeur le code
+    const linkCode = code(1000000000000000000000000000000000000001,"40")
     //appel la fonction de nodeMailer
     nodeMailer.main(req.body.email, `<html>
     <body>
@@ -95,7 +94,7 @@ exports.emailVerifcation =(req,res)=>{
 }
 
 exports.linkVerification = (req, res) => {
-    const linkCodeFormat = /^\$2[ayb]\$.{56}$/g
+    const linkCodeFormat = /^[\d]{40}$/g
     const testFormat = linkCodeFormat.test(req.params.linkCode)
     if(!testFormat){
         return res.status(400).send({message: `Le lien est incorrect`})  
@@ -105,13 +104,9 @@ exports.linkVerification = (req, res) => {
             linkCode: req.params.linkCode
         }
     }).then(email => {
-        const compareHash = bcrypt.compareSync(email.email,req.params.linkCode)
-        if(!compareHash){
-            return res.status(400).send({message: `La verification du lien a echouer`})
-        }
         codeExpiration(email.id)
         return res.status(200).send({message: `L'adresse mail: ${email.email} est bien Validée, Le serveur est à titre démonstratif les données vont y être supprimées`})
     }).catch(err => {
-        return res.status(500).send({message: err})
+        return res.status(404).send({message: "Le lien n'est associé a aucun email en mémoire"})
     })
 }
