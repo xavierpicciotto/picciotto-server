@@ -30,7 +30,7 @@ exports.register = (req, res) => {
         return code
     }
     const verifyCode = code(1001,"4") //fixe la valeur le code
-    const linkCode = code(1000000000000000000000000000000000000001,"40")
+    const linkCode = code(10000000000000000001,"20")
     //appel la fonction de nodeMailer
     nodeMailer.main(req.body.email, `<html>
     <body>
@@ -94,7 +94,7 @@ exports.emailVerifcation =(req,res)=>{
 }
 
 exports.linkVerification = (req, res) => {
-    const linkCodeFormat = /^[\d]{40}$/g
+    const linkCodeFormat = /^[\d]{20}$/g
     const testFormat = linkCodeFormat.test(req.params.linkCode)
     if(!testFormat){
         return res.status(400).send({message: `Le lien est incorrect`})  
