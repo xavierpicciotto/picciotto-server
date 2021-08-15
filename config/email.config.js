@@ -4,7 +4,7 @@ const authSmtp = require('./smtpID.config')
 //NODEMAILER config
  async function main(emailTarget,emailContent) {
     let transporter = nodemailer.createTransport({
-      name: 'localhost',
+      name: 'female-zipper.com',
       host: "ssl0.ovh.net",
       port: 465,
       secure: true, // upgrade later with STARTTLS
