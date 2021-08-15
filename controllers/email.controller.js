@@ -23,7 +23,6 @@ async function codeExpiration(id) {
 
 //Creer un demande de verification pour l'email renseigné
 exports.register = (req, res) => {
-
     const code = () => {
         //creer un code pin pour la verification d'email
         let code = Math.floor(Math.random() * 1001) + ''
@@ -31,36 +30,36 @@ exports.register = (req, res) => {
         return code
     }
     const verifyCode = code() //fixe la valeur le code
-    Email.create({
-        email: req.body.email,
-        verifyCode: verifyCode
-    }).then((email) => {
-        //Délai d'expiration du Code de verif
-        setTimeout(() => {
-            codeExpiration(email.id)
-        }, 300000/*5min*/)
-        //appel la fonction de nodeMailer
-        nodeMailer.main(req.body.email, `<html>
-        <body>
-            <h1>PICCIOTTO-XM</h1>
-            <h2>Vérification de l'email ${req.body.email}</h2>
-            <h2>Methode n°1</h3>
-            <div class="code">
-                <h1>CODE : ${verifyCode} </h1>
-            </div>
-        </body>
-        </html>`).then(() => {
+    //appel la fonction de nodeMailer
+    nodeMailer.main(req.body.email, `<html>
+    <body>
+        <h1>PICCIOTTO-XM</h1>
+        <h2>Vérification de l'email ${req.body.email}</h2>
+        <h2>Methode n°1</h3>
+        <div class="code">
+            <h1>CODE : ${verifyCode} </h1>
+        </div>
+    </body>
+    </html>`).then(() => {
+        Email.create({
+            email: req.body.email,
+            verifyCode: verifyCode
+        }).then((email) => {
+            //Délai d'expiration du Code de verif
+            setTimeout(() => {
+                codeExpiration(email.id)
+            }, 300000/*5min*/)
             return res.status(200).send({
-                message: `Email sauvegardé, un code de verification va vous êtres envoyé (valide 10min). Penser a regarder dans les spams si vous n'avez pas reçu l'email de confirmation`
+                message: `Email sauvegardé ${new Date}, un code de verification va vous êtres envoyé (valide 5min). Penser a regarder dans les spams si vous n'avez pas reçu l'email de confirmation`
             })
-        }).catch(() => {
-            res.status(400).send({
-                message: 'vérifier les donées saisies'
-            })
-        });
-    }).catch(err => res.status(500).send({
-        message: `Error : ${err}`
-    }))
+        }).catch(err => res.status(500).send({
+            message: `Error : ${err}`
+        }))
+    }).catch((err) => {
+        res.status(400).send({
+            message: 'vérifier les donées saisies', err
+        })
+    });
 }
 
 exports.emailVerifcation =(req,res)=>{
