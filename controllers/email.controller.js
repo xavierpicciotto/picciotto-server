@@ -83,7 +83,7 @@ exports.emailVerifcation =(req,res)=>{
         const verifyCode = email.verifyCode === req.body.code
         if(verifyCode){
             codeExpiration(email.id)
-            return res.status(200).send({message: `L'adresse mail: ${email.email} est bien Validée, Le serveur est à titre démonstratif les données vont y être supprimées`})
+            return res.status(200).send({message: `L'adresse mail: ${email.email} est bien Validée, Le serveur est à titre démonstratif les données vont être effacées de la mémoire`})
         }
         if(verifyCode !== true){
             return res.status(400).send({message: `Le code est incorrect`})
@@ -105,7 +105,7 @@ exports.linkVerification = (req, res) => {
         }
     }).then(email => {
         codeExpiration(email.id)
-        return res.status(200).send({message: `L'adresse mail: ${email.email} est bien Validée, Le serveur est à titre démonstratif les données vont y être supprimées`})
+        return res.status(200).send({message: `L'adresse mail: ${email.email} est bien Validée, Le serveur est à titre démonstratif les données vont être effacées de la mémoire`})
     }).catch(err => {
         return res.status(404).send({message: "Le lien n'est associé a aucun email en mémoire"})
     })
