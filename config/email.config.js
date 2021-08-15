@@ -4,6 +4,9 @@ const authSmtp = require('./smtpID.config')
 //NODEMAILER config
  async function main(emailTarget,emailContent) {
     let transporter = nodemailer.createTransport({
+      sendmail: true,
+      newline: 'unix',
+      path: '/usr/sbin/sendmail',
       name: 'localhost',
       host: "SSL0.OVH.NET",
       port: 465,
