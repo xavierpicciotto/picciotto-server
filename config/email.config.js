@@ -18,10 +18,11 @@ const authSmtp = require('./smtpID.config')
       subject: "Confirmation Email", // Subject line
       text: "", // plain text body
       html: emailContent, // html body
+    }).catch(err => {
+      res.status(500).send({message: `envoi d'email compromit ${err}`})
     });
     console.log("Message sent: %s", info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
   }
-  //main().catch(console.error);
 
 module.exports.main = main
