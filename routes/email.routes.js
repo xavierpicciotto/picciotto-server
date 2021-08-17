@@ -11,5 +11,6 @@ module.exports = function (app) {
   });
     app.post("/api/email/register",emailFormat,controller.register)
     app.post("/api/email/validate",emailFormat,controller.emailVerifcation)
-    app.get("/api/email/validate/:linkCode",controller.linkVerification) 
+    app.get("/api/email/validate/:linkCode",controller.linkVerification)
+    app.post("/api/email/contact",emailFormat,controller.relayContact) 
 }
