@@ -20,6 +20,11 @@ exports.signup = (req, res) => {
             message: `Utilisateur correctement enregistré !`
         })
     }).catch(err => {
+        if(err.message == "Validation error"){
+            return res.status(400).send({
+                message: "Username déjà utilisé"
+            }) 
+        }
         return res.status(500).send({
             message: err.message
         })
