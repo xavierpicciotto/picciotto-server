@@ -9,7 +9,7 @@ const User = db.user
 exports.signup = (req, res) => {
     if (req.body.user_name == undefined || req.body.password == undefined) {
         return res.status(400).send({
-            message: `Indentifiant incomplet, user_name et password reqsuis`
+            message: `Indentifiant incomplet, user_name et password reqsuis.`
         })
     }
     User.create({
@@ -22,7 +22,7 @@ exports.signup = (req, res) => {
     }).catch(err => {
         if(err.message == "Validation error"){
             return res.status(400).send({
-                message: "Username déjà utilisé"
+                message: "Username déjà utilisé."
             }) 
         }
         return res.status(500).send({
@@ -48,7 +48,7 @@ exports.signin = (req, res) => {
         if (!verifyPassword) {
             return res.status(401).send({
                 accessToken: null,
-                message: 'Mot de passe incorrect'
+                message: 'Mot de passe incorrect.'
             })
         }
         const token = jwt.sign({
@@ -90,7 +90,7 @@ exports.modify = (req, res) => {
                 }
             }).then(() => {
             return res.status(201).send({
-                message: 'modification succes'
+                message: 'Modification succes.'
             })
         }).catch(err => {
             return res.status(500).send({
@@ -99,7 +99,7 @@ exports.modify = (req, res) => {
         })
     }).catch(err => {
         return res.status(404).send({
-            message: 'Utilisateur non existant' + err
+            message: 'Utilisateur non existant.' + err
         })
     })
 }
@@ -113,12 +113,12 @@ exports.deleteUser = (req, res) => {
     }).then(deleted => {
         if (deleted === 1) {
             return res.status(200).send({
-                message: 'supresion succes'
+                message: 'Suppresion succes.'
             })
         }
         if (deleted !== 1) {
             return res.status(404).send({
-                message: "Utilisateur inexistant"
+                message: "Utilisateur inexistant."
             })
         }
 
