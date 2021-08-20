@@ -3,7 +3,7 @@ const config = require('../config/jwt.config')
 
 module.exports = (req, res, next) => {
     try {
-        const token = req.headers.authorization
+        const token = req.headers['x-access-token']
         if (token === undefined) {
             return res.status(401).send({
                 message: "Token valide requis"
